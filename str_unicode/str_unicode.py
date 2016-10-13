@@ -9,6 +9,7 @@ print s.decode('utf-8') #把str解码为unicode, 输出正常
 print unicode(s,'utf-8') #同decode方法
 print u
 
+
 #如果变量是raw_input进来的，则该变量是一个str类型的对象
 s2 = raw_input('Input:')
 print type(s2) #str
@@ -20,12 +21,27 @@ u2 = raw_input(u'输入:'.encode('gbk')).decode(sys.stdin.encoding) # 或者 uni
 print type(u2) #unicode
 print u2, len(u2) #len(u2='测试')为2
 
-'''使用字符串(如 s,s2)作为函数调用的参数时，需要先转换为unicode对象
-例如 ..\socket\tcpc.py'''
+
+# 使用字符串(如 s,s2)作为函数调用的参数时，需要先转换为unicode对象，例如 ..\socket\tcpc.py
+
 
 '''文件处理。文件str_unicode.txt 内容为 'abc中文'
 print open('test_unicode.txt').read() ，中文输出为乱码'''
 print open('test_unicode.txt').read().decode('utf-8') 
 
 
-
+#异常中使用中文
+try:    
+    raise Exception(u'wrong 错误')
+except Exception as e:
+    print unicode(e)
+    
+try:    
+    raise Exception(u'wrong 错误'.encode('utf-8'))
+except Exception as e:
+    print str(e).decode('utf-8')
+    
+try:    
+    raise Exception('wrong 错误')
+except Exception as e:
+    print str(e).decode('utf-8')

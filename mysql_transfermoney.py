@@ -16,7 +16,7 @@ class TransferMoney(object):
             print "check_acct_available:" + sql
             rs = cursor.fetchall()
             if len(rs) != 1:
-                raise Exception("账号%s不存在" % acctid)
+                raise Exception(u"账号%s不存在" % acctid)
         finally:
             cursor.close()
     
@@ -29,19 +29,19 @@ class TransferMoney(object):
             print "has_enough_money:" + sql
             rs = cursor.fetchall()
             if len(rs) != 1:
-                raise Exception("账号%s没有足够的钱" % acctid)
+                raise Exception(u"账户%s余额不足" % acctid)
         finally:
             cursor.close()      
     
     #减款
-    def reduce_money(self, sacctid, money):
+    def reduce_money(self, acctid, money):
         cursor = self.conn.cursor()
         try:
             sql = "update account set money=money-%s where acctid=%s" % (money, acctid)
             cursor.execute(sql)
             print "reduce_money:" + sql
-            if cursor.rowcount() != 1:
-                raise Exception("账号%s减款失败" % acctid)
+            if cursor.rowcount != 1:
+                raise Exception(u"账号%s减款失败" % acctid)
         finally:
             cursor.close()
     
@@ -52,8 +52,8 @@ class TransferMoney(object):
             sql = "update account set money=money+%s where acctid=%s" % (money, acctid)
             cursor.execute(sql)
             print "add_money:" + sql
-            if cursor.rowcount() != 1:
-                raise Exception("账号%s加款失败" % acctid)
+            if cursor.rowcount != 1:
+                raise Exception(u"账号%s加款失败" % acctid)
         finally:
             cursor.close()
     
@@ -72,7 +72,7 @@ class TransferMoney(object):
 
 if __name__ == "__main__":
     source_acctid = sys.argv[1]
-    target_acctid = sys.agrv[2]
+    target_acctid = sys.argv[2]
     money = sys.argv[3]
     
     #建立数据库连接对象
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     try:
         tr_money.transfer(source_acctid, target_acctid, money)
     except Exception as e:
-        print "出现问题:" + str(e)
+        print u"出现问题:", unicode(e)
     finally:
         conn.close()
         
